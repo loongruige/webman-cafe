@@ -9,11 +9,11 @@
     Mandatory plugin information.
     If not set correctly, the loader will refuse to use the plugin.
 **/
-WUPS_PLUGIN_NAME("Example plugin");
-WUPS_PLUGIN_DESCRIPTION("This is just an example plugin and will log the FSOpenFile function.");
+WUPS_PLUGIN_NAME("webMAN Cafe");
+WUPS_PLUGIN_DESCRIPTION("Aroma Web Control Plugin");
 WUPS_PLUGIN_VERSION("v1.0");
-WUPS_PLUGIN_AUTHOR("Maschell");
-WUPS_PLUGIN_LICENSE("BSD");
+WUPS_PLUGIN_AUTHOR("ruigegoat");
+WUPS_PLUGIN_LICENSE("")
 
 #define LOG_FS_OPEN_CONFIG_ID "logFSOpen"
 
@@ -24,7 +24,7 @@ WUPS_PLUGIN_LICENSE("BSD");
 **/
 
 WUPS_USE_WUT_DEVOPTAB();            // Use the wut devoptabs
-WUPS_USE_STORAGE("example_plugin"); // Unique id for the storage api
+WUPS_USE_STORAGE("wm_cafe"); // Unique id for the storage api
 
 bool logFSOpen = true;
 
@@ -34,26 +34,26 @@ bool logFSOpen = true;
 INITIALIZE_PLUGIN() {
     // Logging only works when compiled with `make DEBUG=1`. See the README for more information.
     initLogging();
-    DEBUG_FUNCTION_LINE("INITIALIZE_PLUGIN of example_plugin!");
+    DEBUG_FUNCTION_LINE("webMAN Cafe initialise baslangici");
 
     // Open storage to read values
     WUPSStorageError storageRes = WUPS_OpenStorage();
     if (storageRes != WUPS_STORAGE_ERROR_SUCCESS) {
-        DEBUG_FUNCTION_LINE("Failed to open storage %s (%d)", WUPS_GetStorageStatusStr(storageRes), storageRes);
+        DEBUG_FUNCTION_LINE("Depolama alani acilamadi %s (%d)", WUPS_GetStorageStatusStr(storageRes), storageRes);
     } else {
         // Try to get value from storage
         if ((storageRes = WUPS_GetBool(nullptr, LOG_FS_OPEN_CONFIG_ID, &logFSOpen)) == WUPS_STORAGE_ERROR_NOT_FOUND) {
             // Add the value to the storage if it's missing.
             if (WUPS_StoreBool(nullptr, LOG_FS_OPEN_CONFIG_ID, logFSOpen) != WUPS_STORAGE_ERROR_SUCCESS) {
-                DEBUG_FUNCTION_LINE("Failed to store bool");
+                DEBUG_FUNCTION_LINE("Bool değeri koyulamadi");
             }
         } else if (storageRes != WUPS_STORAGE_ERROR_SUCCESS) {
-            DEBUG_FUNCTION_LINE("Failed to get bool %s (%d)", WUPS_GetStorageStatusStr(storageRes), storageRes);
+            DEBUG_FUNCTION_LINE("Bool değeri alinamadi %s (%d)", WUPS_GetStorageStatusStr(storageRes), storageRes);
         }
 
         // Close storage
         if (WUPS_CloseStorage() != WUPS_STORAGE_ERROR_SUCCESS) {
-            DEBUG_FUNCTION_LINE("Failed to close storage");
+            DEBUG_FUNCTION_LINE("Depolama alani kapatilamadi");
         }
     }
     deinitLogging();
@@ -63,7 +63,7 @@ INITIALIZE_PLUGIN() {
     Gets called when the plugin will be unloaded.
 **/
 DEINITIALIZE_PLUGIN() {
-    DEBUG_FUNCTION_LINE("DEINITIALIZE_PLUGIN of example_plugin!");
+    DEBUG_FUNCTION_LINE("webMAN Cafe deinit");
 }
 
 /**
@@ -72,7 +72,7 @@ DEINITIALIZE_PLUGIN() {
 ON_APPLICATION_START() {
     initLogging();
 
-    DEBUG_FUNCTION_LINE("ON_APPLICATION_START of example_plugin!");
+    DEBUG_FUNCTION_LINE("WebMan-Cafe uygulama acildi, gerekli güncellemeyi yap");
 }
 
 /**
@@ -86,7 +86,7 @@ ON_APPLICATION_ENDS() {
     Gets called when an application request to exit.
 **/
 ON_APPLICATION_REQUESTS_EXIT() {
-    DEBUG_FUNCTION_LINE_INFO("ON_APPLICATION_REQUESTS_EXIT of example_plugin!");
+    DEBUG_FUNCTION_LINE_INFO("WebMan-Cafe uygulama kapanmak istiyor, gerekli guncellemeyi yap");
 }
 
 /**
